@@ -229,6 +229,11 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
 .lb img{max-width:100%; max-height:78vh; object-fit:contain}
 .lb p{color:#D6D4CE; text-align:center; font-family:var(--type); font-size:14px; max-width:60ch}
 .lb-x{position:absolute; top:calc(env(safe-area-inset-top,0px) + 10px); right:max(12px, env(safe-area-inset-right,0px)); width:44px; height:44px; border:1px solid #3A3936; background:transparent; color:#fff; font-size:26px; cursor:pointer}
+.lb-nav{position:absolute; top:50%; transform:translateY(-50%); width:44px; height:64px; border:0; background:rgba(20,18,16,.6); color:#fff; font-size:34px; line-height:1; cursor:pointer; z-index:2}
+.lb-prev{left:max(4px, env(safe-area-inset-left,0px))} .lb-next{right:max(4px, env(safe-area-inset-right,0px))}
+.lb-nav:disabled{opacity:.2; cursor:default}
+.lb-count{position:absolute; top:calc(env(safe-area-inset-top,0px) + 22px); left:max(16px, env(safe-area-inset-left,0px)); color:#A39E94; font:600 13px/1 system-ui,sans-serif; letter-spacing:.08em; font-variant-numeric:tabular-nums}
+.lb img{touch-action:pan-y; user-select:none; -webkit-user-select:none; transition:opacity .2s}
 /* about */
 .about{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.3fr); gap:40px}
 @media (max-width:820px){ .about{grid-template-columns:1fr; gap:24px} }
@@ -376,6 +381,9 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
   </section>
   <div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Photo viewer">
     <button type="button" class="lb-x" id="lb-x" aria-label="Close">&times;</button>
+    <button type="button" class="lb-nav lb-prev" id="lb-prev" aria-label="Previous photo">&#8249;</button>
+    <button type="button" class="lb-nav lb-next" id="lb-next" aria-label="Next photo">&#8250;</button>
+    <span class="lb-count" id="lb-count"></span>
     <img id="lb-img" alt="">
     <p id="lb-cap"></p>
   </div>
@@ -464,16 +472,30 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
   document.getElementById('photo-grid').innerHTML = photos.map(fig).join('');
   document.getElementById('bts-grid').innerHTML = bts.map(fig).join('');
   const lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'), lbCap = document.getElementById('lb-cap');
-  let lbFrom = null;
-  function openLb(el){ lbFrom = el; lbImg.src = el.dataset.src; lbImg.alt = el.dataset.cap; lbCap.textContent = el.dataset.cap; lb.hidden = false; document.getElementById('lb-x').focus(); }
+  let lbFrom = null, lbSet = [], lbI = 0;
+  const lbPrev = document.getElementById('lb-prev'), lbNext = document.getElementById('lb-next'), lbCount = document.getElementById('lb-count');
+  function showLb(i){
+    lbI = Math.max(0, Math.min(lbSet.length-1, i)); const el = lbSet[lbI];
+    lbImg.src = el.dataset.src; lbImg.alt = el.dataset.cap; lbCap.textContent = el.dataset.cap;
+    lbCount.textContent = (lbI+1)+' / '+lbSet.length;
+    lbPrev.disabled = lbI===0; lbNext.disabled = lbI===lbSet.length-1;
+    const n = lbSet[lbI+1]; if(n){ const pre = new Image(); pre.src = n.dataset.src; }
+  }
+  function openLb(el){ lbFrom = el; lbSet = [...el.parentElement.querySelectorAll('figure')]; lb.hidden = false; showLb(lbSet.indexOf(el)); document.getElementById('lb-x').focus(); }
   function closeLb(){ lb.hidden = true; lbImg.removeAttribute('src'); if(lbFrom) lbFrom.focus(); }
   document.querySelectorAll('.masonry figure').forEach(f=>{
     f.addEventListener('click',()=>openLb(f));
     f.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openLb(f); } });
   });
   document.getElementById('lb-x').addEventListener('click', closeLb);
+  lbPrev.addEventListener('click', e=>{ e.stopPropagation(); showLb(lbI-1); });
+  lbNext.addEventListener('click', e=>{ e.stopPropagation(); showLb(lbI+1); });
   lb.addEventListener('click', e=>{ if(e.target===lb) closeLb(); });
-  addEventListener('keydown', e=>{ if(e.key==='Escape' && !lb.hidden) closeLb(); });
+  addEventListener('keydown', e=>{ if(lb.hidden) return; if(e.key==='Escape') closeLb(); else if(e.key==='ArrowRight') showLb(lbI+1); else if(e.key==='ArrowLeft') showLb(lbI-1); });
+  let tx = null, ty = null;
+  lb.addEventListener('touchstart', e=>{ tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, {passive:true});
+  lb.addEventListener('touchend', e=>{ if(tx===null) return; const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; tx = null;
+    if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) showLb(lbI + (dx < 0 ? 1 : -1)); }, {passive:true});
 
 
   /* colour washes in as each image reaches the middle of the screen */
