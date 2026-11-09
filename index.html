@@ -162,7 +162,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
 .credit .role b{color:var(--red); font-weight:700}
 .credit .note{color:var(--muted); font-size:14px; margin-top:4px}
 .credit .go{font-family:var(--type); font-size:13px; white-space:nowrap}
-.credit a:hover h3{color:var(--red)}
+@media (hover:hover) and (pointer:fine){ .credit a:hover h3{color:var(--red)} }
 @media (max-width:680px){
   .credit a, .credit .row-nolink{grid-template-columns:116px minmax(0,1fr); gap:14px; align-items:start}
   .credit .go{display:none}
