@@ -229,9 +229,12 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
 .lb img{max-width:100%; max-height:78vh; object-fit:contain}
 .lb p{color:#D6D4CE; text-align:center; font-family:var(--type); font-size:14px; max-width:60ch}
 .lb-x{position:absolute; top:calc(env(safe-area-inset-top,0px) + 10px); right:max(12px, env(safe-area-inset-right,0px)); width:44px; height:44px; border:1px solid #3A3936; background:transparent; color:#fff; font-size:26px; cursor:pointer}
-.lb-nav{position:absolute; top:50%; transform:translateY(-50%); width:44px; height:64px; border:0; background:rgba(20,18,16,.6); color:#fff; font-size:34px; line-height:1; cursor:pointer; z-index:2}
+.lb-nav{position:absolute; top:50%; transform:translateY(-50%); width:40px; height:56px; border:0; background:none; color:rgba(255,255,255,.45); font-size:30px; line-height:1; cursor:pointer; z-index:2; transition:color .2s}
+.lb-nav:hover{color:#fff}
+.lb-nav:focus:not(:focus-visible){outline:none}
+@media (hover:none), (pointer:coarse){ .lb-nav{display:none} }
 .lb-prev{left:max(4px, env(safe-area-inset-left,0px))} .lb-next{right:max(4px, env(safe-area-inset-right,0px))}
-.lb-nav:disabled{opacity:.2; cursor:default}
+.lb-nav:disabled{opacity:0; cursor:default}
 .lb-count{position:absolute; top:calc(env(safe-area-inset-top,0px) + 22px); left:max(16px, env(safe-area-inset-left,0px)); color:#A39E94; font:600 13px/1 system-ui,sans-serif; letter-spacing:.08em; font-variant-numeric:tabular-nums}
 .lb img{touch-action:pan-y; user-select:none; -webkit-user-select:none; transition:opacity .2s}
 /* about */
@@ -477,7 +480,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
   function showLb(i){
     lbI = Math.max(0, Math.min(lbSet.length-1, i)); const el = lbSet[lbI];
     lbImg.src = el.dataset.src; lbImg.alt = el.dataset.cap; lbCap.textContent = el.dataset.cap;
-    lbCount.textContent = (lbI+1)+' / '+lbSet.length;
+    lbCount.textContent = (lbI+1)+' / '+lbSet.length+(matchMedia('(pointer:coarse)').matches && lbSet.length>1 ? '  ·  swipe' : '');
     lbPrev.disabled = lbI===0; lbNext.disabled = lbI===lbSet.length-1;
     const n = lbSet[lbI+1]; if(n){ const pre = new Image(); pre.src = n.dataset.src; }
   }
