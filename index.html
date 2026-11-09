@@ -96,9 +96,9 @@ header{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background
 header .wrap{display:flex; justify-content:space-between; align-items:center; gap:12px; padding-block:10px}
 @media (max-width:760px){
   header .wrap{flex-wrap:wrap; padding-block:10px 0; gap:4px}
-  nav{order:2; width:100%; gap:18px; overflow-x:auto; scrollbar-width:none; padding-block:6px 10px;
-    margin-left:calc(-1 * var(--gut-l)); margin-right:calc(-1 * var(--gut-r)); padding-left:var(--gut-l); padding-right:var(--gut-r)}
-  nav::-webkit-scrollbar{display:none}
+  header nav{order:2; width:100%; display:grid; grid-template-columns:repeat(3,max-content); justify-content:space-between; gap:2px 12px; padding-block:4px 8px}
+  header nav a{padding-block:5px; font-size:clamp(12px,3.6vw,14px)}
+  header nav a.studio-link{padding-left:0; border-left:0}
 }
 .mark{font-family:var(--display); font-stretch:68%; font-weight:800; font-size:22px; text-transform:uppercase; text-decoration:none; letter-spacing:.01em}
 .mark span{color:var(--red)}
@@ -106,7 +106,7 @@ nav{display:flex; gap:16px; align-items:center}
 nav a.studio-link{color:var(--red); padding-left:16px; border-left:1px solid var(--rule)}
 nav a{font-family:var(--type); font-size:13px; text-decoration:none; color:var(--muted); white-space:nowrap}
 nav a:hover, nav a.on{color:var(--ink); text-decoration:underline; text-decoration-color:var(--red); text-underline-offset:4px}
-@media (max-width:420px){ nav a{font-size:12px} .mark{white-space:nowrap} }
+@media (max-width:420px){ .mark{white-space:nowrap} }
 
 /* call sheet hero */
 .hero{padding-block:28px 56px}
