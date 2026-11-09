@@ -56,22 +56,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Courier+Prime:wght@400;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:ital,wght@0,400;0,500;0,600;1,400&family=Courier+Prime:wght@400;700&display=swap">
 <style>
-/* Layout: the whole page is Max's call sheet — ruled header block, then credits, a production tracker for Vic, a progression timeline and a sign-off. Condensed grotesk + typewriter, one red shared with Haddow Media. */
+/* Layout: the whole page is Max's call sheet — ruled header block, then credits, a production tracker for Vic, a progression timeline and a sign-off. Barlow Condensed + typewriter, tungsten amber shared with Haddow Media. */
 :root{
   --paper:#F3F3F1; --sheet:#FFFFFF; --ink:#141414; --muted:#5E5D59; --rule:#C9C8C2;
-  --red:#B8141F; --red-ink:#FFFFFF; --hi:#F6E3E4;
-  --display:"Archivo", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
-  --body:"Archivo", "Helvetica Neue", Arial, sans-serif;
+  --red:#A1600C; --red-ink:#FFFFFF; --hi:#F6EBD8;
+  --display:"Barlow Condensed", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --body:"Barlow", "Helvetica Neue", Arial, sans-serif;
   --type:"Courier Prime", "Courier New", ui-monospace, monospace;
   --gut-l:max(16px, env(safe-area-inset-left, 0px));
   --gut-r:max(16px, env(safe-area-inset-right, 0px));
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --paper:#101010; --sheet:#181817; --ink:#EDECE7; --muted:#A09E98; --rule:#33322F; --red:#E3404A; --red-ink:#FFFFFF; --hi:#2A1416; color-scheme:dark }}
+  --paper:#101010; --sheet:#181817; --ink:#EDECE7; --muted:#A09E98; --rule:#33322F; --red:#E9A23B; --red-ink:#121110; --hi:#2A2010; color-scheme:dark }}
 :root[data-theme="dark"]{
-  --paper:#101010; --sheet:#181817; --ink:#EDECE7; --muted:#A09E98; --rule:#33322F; --red:#E3404A; --red-ink:#FFFFFF; --hi:#2A1416; color-scheme:dark }
+  --paper:#101010; --sheet:#181817; --ink:#EDECE7; --muted:#A09E98; --rule:#33322F; --red:#E9A23B; --red-ink:#121110; --hi:#2A2010; color-scheme:dark }
 
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -133,7 +133,7 @@ nav a:hover, nav a.on{color:var(--ink); text-decoration:underline; text-decorati
 .grid .avail b{color:var(--red)}
 .grid .avail b::before{content:""; display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--red); margin-right:7px; vertical-align:1px; animation:blink 1.6s steps(2,end) infinite}
 @keyframes blink{50%{opacity:.2}}
-@media (max-width:680px){ .grid{grid-template-columns:repeat(2,minmax(0,1fr))} .grid div:nth-child(2){border-right:0} .grid div:nth-child(-n+2){border-bottom:1px solid var(--rule)} }
+@media (max-width:680px){ .grid{grid-template-columns:repeat(2,minmax(0,1fr))} .grid div:nth-child(2){border-right:0} .grid div:nth-child(-n+3){border-bottom:1px solid var(--rule)} .grid .avail, .grid .contact-cell{grid-column:1/-1; border-right:0} .grid .contact-cell b{overflow-wrap:normal} }
 .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:20px}
 .btn{display:inline-flex; align-items:center; gap:8px; padding:12px 18px; border:1.5px solid var(--ink); background:transparent; color:var(--ink); font:600 15px var(--body); text-decoration:none; cursor:pointer}
 .btn:hover{background:var(--ink); color:var(--paper)}
@@ -273,7 +273,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
       <div class="sheet-top"><span>Call sheet · <b>No. 01</b></span><span id="today">London</span></div>
       <div class="sheet-main">
         <div class="sheet-name">
-          <h1>Max<br>Haddow-<br><em>Mendes</em></h1>
+          <h1>Max<br>Haddow&#8209;<br><em>Mendes</em></h1>
           <p>Videographer and editor, looking for my next role in film and television production.</p>
         </div>
         <div class="headshot"><img src="img/max-portrait.jpg" alt="Max Haddow-Mendes on the Isle of Skye" width="560" height="768"></div>
@@ -282,7 +282,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
         <div><span class="label">Role</span><b>Camera &amp; Edit</b></div>
         <div><span class="label">Base</span><b>London, UK</b></div>
         <div class="avail"><span class="label">Availability</span><b>Open to roles</b></div>
-        <div><span class="label">Contact</span><b>haddowmedia96@gmail.com</b></div>
+        <div class="contact-cell"><span class="label">Contact</span><b>haddowmedia96@gmail.com</b></div>
       </div>
     </div>
     <div class="cta">
@@ -336,7 +336,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
     <div class="wrap">
       <div class="sec-head">
         <div><span class="label">Curriculum vitae</span><h2>Progression</h2></div>
-        <p>How I got here, newest first. Film work in red; training and qualifications in black.</p>
+        <p>How I got here, newest first. Film work in amber; training and qualifications in black.</p>
       </div>
       <div class="legend label"><span><i class="f"></i>Film work</span><span><i></i>Training</span></div>
       <ol class="prog">
