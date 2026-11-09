@@ -94,12 +94,19 @@ h3{font-size:30px; line-height:1}
 /* header */
 header{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:var(--paper); border-bottom:1px solid var(--ink)}
 header .wrap{display:flex; justify-content:space-between; align-items:center; gap:12px; padding-block:10px}
+@media (max-width:760px){
+  header .wrap{flex-wrap:wrap; padding-block:10px 0; gap:4px}
+  nav{order:2; width:100%; gap:18px; overflow-x:auto; scrollbar-width:none; padding-block:6px 10px;
+    margin-left:calc(-1 * var(--gut-l)); margin-right:calc(-1 * var(--gut-r)); padding-left:var(--gut-l); padding-right:var(--gut-r)}
+  nav::-webkit-scrollbar{display:none}
+}
 .mark{font-family:var(--display); font-stretch:68%; font-weight:800; font-size:22px; text-transform:uppercase; text-decoration:none; letter-spacing:.01em}
 .mark span{color:var(--red)}
-nav{display:flex; gap:16px}
+nav{display:flex; gap:16px; align-items:center}
+nav a.studio-link{color:var(--red); padding-left:16px; border-left:1px solid var(--rule)}
 nav a{font-family:var(--type); font-size:13px; text-decoration:none; color:var(--muted); white-space:nowrap}
 nav a:hover, nav a.on{color:var(--ink); text-decoration:underline; text-decoration-color:var(--red); text-underline-offset:4px}
-@media (max-width:420px){ nav{gap:10px} nav a{font-size:11px} .mark{font-size:20px; white-space:nowrap} }
+@media (max-width:420px){ nav a{font-size:12px} .mark{white-space:nowrap} }
 
 /* call sheet hero */
 .hero{padding-block:28px 56px}
@@ -255,6 +262,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
       <a href="#cv">CV</a>
       <a href="#photos">Photos</a>
       <a href="#contact">Contact</a>
+      <a href="/" class="studio-link" title="Haddow Media: films, packages and booking">Haddow Media &#8599;</a>
     </nav>
   </div>
 </header>
@@ -465,7 +473,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
   addEventListener('keydown', e=>{ if(e.key==='Escape' && !lb.hidden) closeLb(); });
 
   /* active section in nav */
-  const links = [...document.querySelectorAll('#nav a')];
+  const links = [...document.querySelectorAll('#nav a[href^="#"]')];
   const secs = links.map(a=>document.querySelector(a.getAttribute('href')));
   function onScroll(){
     let cur = -1; secs.forEach((s,i)=>{ if(s && s.getBoundingClientRect().top < innerHeight*0.35) cur = i; });
