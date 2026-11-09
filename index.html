@@ -151,8 +151,11 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
 .credit{border-bottom:1px solid var(--rule)}
 .credit a, .credit .row-nolink{display:grid; grid-template-columns:200px minmax(0,1fr) auto; gap:20px; align-items:center; padding:16px 0; text-decoration:none}
 .credit .thumb{position:relative; aspect-ratio:16/9; max-width:100%; background:var(--ink); overflow:hidden}
-.credit .thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:grayscale(1); transition:filter .8s ease}
-.credit a:hover .thumb img, .credit.live .thumb img{filter:none}
+.credit .thumb img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:filter .8s ease}
+/* colour reveal: black and white until it reaches the middle of the screen (or is hovered) */
+.bw img, img.bw{filter:grayscale(1); transition:filter .8s ease}
+.bw.live img, img.bw.live, .bw:hover img, img.bw:hover{filter:none}
+
 .credit .thumb span{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--paper); font-family:var(--display); font-stretch:68%; font-weight:800; text-transform:uppercase; font-size:20px; text-align:center; padding:8px; line-height:1}
 .credit h3{font-size:clamp(28px,5vw,40px)}
 .credit .role{margin-top:6px; font-family:var(--type); font-size:14px}
@@ -310,13 +313,13 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
       </div>
       <div class="vic">
         <div class="vic-media">
-          <img class="poster" src="img/film-vic-poster.jpg" alt="Vic film poster: Grandad sitting on garden steps" loading="lazy">
-          <a class="vic-frame" href="https://youtu.be/8en_0AMpEnM" target="_blank" rel="noopener" aria-label="Watch the Vic trailer on YouTube">
+          <img class="poster bw" src="img/film-vic-poster.jpg" alt="Vic film poster: Grandad sitting on garden steps" loading="lazy">
+          <a class="vic-frame bw" href="https://youtu.be/8en_0AMpEnM" target="_blank" rel="noopener" aria-label="Watch the Vic trailer on YouTube">
             <span class="t">Vic</span>
             <img alt="Still from the Vic trailer: Grandad at his kitchen table" loading="lazy" src="img/film-vic.jpg" onerror="this.remove()">
             <span class="play">&#9654; Trailer</span>
           </a>
-          <img class="still2" src="img/film-vic-mug.jpg" alt="Still from the Vic trailer: Grandad with a mug of tea" loading="lazy">
+          <img class="still2 bw" src="img/film-vic-mug.jpg" alt="Still from the Vic trailer: Grandad with a mug of tea" loading="lazy">
         </div>
         <div>
           <p class="desc">A personal documentary about my grandad, his life and the family stories around him. The trailer gives a first look at the film I'm making now.</p>
@@ -431,7 +434,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
   document.getElementById('credits').innerHTML = credits.map(c=>{
     const href = c.href || (c.id ? 'https://youtu.be/'+c.id : '');
     const src = c.img ? 'img/'+c.img+'.jpg' : (c.id ? 'https://i.ytimg.com/vi/'+c.id+'/hqdefault.jpg' : '');
-    return '<li class="credit">'+(href?'<a href="'+href+'" target="_blank" rel="noopener">':'<div class="row-nolink">')+
+    return '<li class="credit bw">'+(href?'<a href="'+href+'" target="_blank" rel="noopener">':'<div class="row-nolink">')+
       '<div class="thumb"><span>'+esc(c.short||c.title)+'</span>'+(src?'<img alt="'+esc(c.title)+' – still from the film" loading="lazy" src="'+src+'" onerror="this.remove()">':'')+'</div>'+
       '<div><h3>'+esc(c.title)+'</h3>'+
         (c.role?'<div class="role"><b>'+c.role+'</b></div>':'')+
@@ -457,7 +460,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
     ['skye-d600','Isle of Skye: setting up by the Skye Bridge',1200,1600],['skye-interview','Isle of Skye: interviews at the Old Man of Storr',1600,899],
     ['skye-notes','Isle of Skye: on location at the Storr',1600,899],['skye-talisker','Isle of Skye: Talisker Distillery',1600,1200]
   ];
-  const fig = ([f,c,w,h]) => '<figure data-src="img/'+f+'.jpg" data-cap="'+esc(c)+'" tabindex="0" role="button" aria-label="Enlarge: '+esc(c)+'"><img src="img/'+f+'.jpg" alt="'+esc(c)+'" width="'+w+'" height="'+h+'" loading="lazy"><figcaption>'+esc(c)+'</figcaption></figure>';
+  const fig = ([f,c,w,h]) => '<figure class="bw" data-src="img/'+f+'.jpg" data-cap="'+esc(c)+'" tabindex="0" role="button" aria-label="Enlarge: '+esc(c)+'"><img src="img/'+f+'.jpg" alt="'+esc(c)+'" width="'+w+'" height="'+h+'" loading="lazy"><figcaption>'+esc(c)+'</figcaption></figure>';
   document.getElementById('photo-grid').innerHTML = photos.map(fig).join('');
   document.getElementById('bts-grid').innerHTML = bts.map(fig).join('');
   const lb = document.getElementById('lb'), lbImg = document.getElementById('lb-img'), lbCap = document.getElementById('lb-cap');
@@ -472,11 +475,12 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
   lb.addEventListener('click', e=>{ if(e.target===lb) closeLb(); });
   addEventListener('keydown', e=>{ if(e.key==='Escape' && !lb.hidden) closeLb(); });
 
-  /* colour washes in as each credit reaches the middle of the screen */
+
+  /* colour washes in as each image reaches the middle of the screen */
   if('IntersectionObserver' in window){
     const io = new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle('live', e.isIntersecting)), {rootMargin:'-35% 0px -35% 0px'});
-    document.querySelectorAll('.credit').forEach(c=>io.observe(c));
-  }
+    document.querySelectorAll('.bw').forEach(c=>io.observe(c));
+  } else document.querySelectorAll('.bw').forEach(c=>c.classList.add('live'));
 
   /* active section in nav */
   const links = [...document.querySelectorAll('#nav a[href^="#"]')];
