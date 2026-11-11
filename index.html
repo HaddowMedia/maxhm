@@ -161,6 +161,11 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
 .credit .role{margin-top:6px; font-family:var(--type); font-size:14px}
 .credit .role b{color:var(--red); font-weight:700}
 .credit .note{color:var(--muted); font-size:14px; margin-top:4px}
+.guest{display:grid; grid-template-columns:200px minmax(0,1fr); gap:20px; align-items:center; margin:0 0 16px 220px; padding:10px; border:1px solid var(--rule); text-decoration:none; background:var(--sheet)}
+.guest img{width:100%; max-width:100%; height:auto; aspect-ratio:16/9; object-fit:cover; display:block}
+.guest span{font-size:14px; color:var(--muted)} .guest b{display:block; font-family:var(--display); font-weight:700; text-transform:uppercase; font-size:20px; color:var(--ink); line-height:1.1}
+@media (hover:hover) and (pointer:fine){ .guest:hover b{color:var(--red)} }
+@media (max-width:680px){ .guest{grid-template-columns:116px minmax(0,1fr); gap:12px; margin-left:0} .guest b{font-size:17px} }
 .credit .go{font-family:var(--type); font-size:13px; white-space:nowrap}
 @media (hover:hover) and (pointer:fine){ .credit a:hover h3{color:var(--red)} }
 @media (max-width:680px){
@@ -437,12 +442,15 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
     {id:'OaNAgC1RfS0', img:'film-heart', title:'The Heart of Midlothian', short:'Midlothian', year:'2019', role:'Director · Editor', note:'Presented short documentary. Presented by Jake Middleton. A Haddow Media production.'},
     {img:'film-glitters', title:'Glitters', year:'2022', role:'Cinematographer', note:'Directed by Angel Chan.'},
     {href:'https://drive.google.com/file/d/1xvB9yPLp9BqG_gPS5XYQYAuxzD6hxi9U/view?usp=sharing', img:'film-armadale', title:'Armadale Castle, Gardens & Museum of the Isles', short:'Armadale', year:'2023–2024', role:'Producer', note:'Commission for Clan Donald Lands Trust, Isle of Skye.'},
-    {href:'https://drive.google.com/file/d/1pQIz4xmOn127S6B1ZcPIbgfhkEZ09ckU/view?usp=sharing', title:'Stewart Dawber on the River Creedy', short:'River Creedy', year:'2025', role:'Cinematographer · Sound · Editor', note:'Short documentary.'},
+    {href:'https://drive.google.com/file/d/1pQIz4xmOn127S6B1ZcPIbgfhkEZ09ckU/view?usp=sharing', img:'film-creedy', title:'Stewart Dawber on the River Creedy', short:'River Creedy', year:'2025', role:'Cinematographer · Sound · Editor', note:'Short documentary about wildlife photographer Stewart Dawber.', extra:'creedy'},
     {id:'4xDeb9Mbi2c', img:'film-cannon', title:'The Portuguese Cannon', short:'The Cannon', year:'2019', role:'Director · Editor', note:'Short documentary on the cannon on Calton Hill, Edinburgh, and its history from Mozambique to Macao. Presented by Jake Middleton. A Haddow Media production.'},
     {id:'NPfmA9y58Cs', img:'film-crichton', title:'Crichton Castle', short:'Crichton', year:'2020', role:'Writer · Director · Editor · Casting', note:'Short documentary. Presented by David Weinczok.'},
     {img:'film-sea2018', title:'Southeast Asia 2018', short:'Southeast Asia', year:'', role:'Editor', note:'Holiday travel film, filmed in 2018 and edited in 2023. A Haddow Media production.'}
   ];
   const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const CREEDY = '<a class="guest bw" href="https://skyehighwildlife.com" target="_blank" rel="noopener">'+
+    '<img src="img/creedy-kingfisher.jpg" alt="Kingfisher on a branch, photographed by Stewart Dawber" loading="lazy" width="900" height="503">'+
+    '<span><b>The kingfisher</b>Photographed by Stewart Dawber, featured in the film. See more of his work at Skye High Wildlife &#8599;</span></a>';
   document.getElementById('credits').innerHTML = credits.map(c=>{
     const href = c.href || (c.id ? 'https://youtu.be/'+c.id : '');
     const src = c.img ? 'img/'+c.img+'.jpg' : (c.id ? 'https://i.ytimg.com/vi/'+c.id+'/hqdefault.jpg' : '');
@@ -451,7 +459,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
       '<div><h3>'+esc(c.title)+'</h3>'+
         (c.role?'<div class="role"><b>'+c.role+'</b></div>':'')+
         '<p class="note">'+esc(c.note)+(c.year?' '+c.year+'.':'')+'</p></div>'+
-      (href?'<span class="go">Watch &#8599;</span></a>':'<span class="go">Not online</span></div>')+'</li>';
+      (href?'<span class="go">Watch &#8599;</span></a>':'<span class="go">Not online</span></div>')+(c.extra==='creedy'?CREEDY:'')+'</li>';
   }).join('');
 
   /* galleries + lightbox */
@@ -470,7 +478,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
     ['bts-door','The Third Web: the doorway shot',1200,1600],['bts-crew','The Third Web: cast and crew at the counter',1200,1600],
     ['bts-tripod','The Third Web: lining up an exterior',1200,1600],['bts-dog2','The Third Web: production still',800,533],
     ['skye-d600','Isle of Skye: setting up by the Skye Bridge',1200,1600],['skye-interview','Isle of Skye: interviews at the Old Man of Storr',1600,899],
-    ['skye-notes','Isle of Skye: on location at the Storr',1600,899],['skye-talisker','Isle of Skye: Talisker Distillery',1600,1200]
+    ['skye-notes','Isle of Skye: on location at the Storr',1600,899],['bts-creedy-hide','River Creedy: in the hide, waiting for the kingfisher',1200,678],['photo-creedy-striders','River Creedy: pond skaters in a shaft of light',1200,672],['skye-talisker','Isle of Skye: Talisker Distillery',1600,1200]
   ];
   const fig = ([f,c,w,h]) => '<figure class="bw" data-src="img/'+f+'.jpg" data-cap="'+esc(c)+'" tabindex="0" role="button" aria-label="Enlarge: '+esc(c)+'"><img src="img/'+f+'.jpg" alt="'+esc(c)+'" width="'+w+'" height="'+h+'" loading="lazy"><figcaption>'+esc(c)+'</figcaption></figure>';
   document.getElementById('photo-grid').innerHTML = photos.map(fig).join('');
