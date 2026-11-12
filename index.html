@@ -478,7 +478,7 @@ section{padding-block:64px; border-top:1.5px solid var(--ink)}
     ['bts-door','The Third Web: the doorway shot',1200,1600],['bts-crew','The Third Web: cast and crew at the counter',1200,1600],
     ['bts-tripod','The Third Web: lining up an exterior',1200,1600],['bts-dog2','The Third Web: production still',800,533],
     ['skye-d600','Isle of Skye: setting up by the Skye Bridge',1200,1600],['skye-interview','Isle of Skye: interviews at the Old Man of Storr',1600,899],
-    ['skye-notes','Isle of Skye: on location at the Storr',1600,899],['bts-creedy-hide','River Creedy: in the hide, waiting for the kingfisher',1200,678],['photo-creedy-striders','River Creedy: pond skaters in a shaft of light',1200,672],['skye-talisker','Isle of Skye: Talisker Distillery',1600,1200]
+    ['skye-notes','Isle of Skye: on location at the Storr',1600,899],['skye-talisker','Isle of Skye: Talisker Distillery',1600,1200]
   ];
   const fig = ([f,c,w,h]) => '<figure class="bw" data-src="img/'+f+'.jpg" data-cap="'+esc(c)+'" tabindex="0" role="button" aria-label="Enlarge: '+esc(c)+'"><img src="img/'+f+'.jpg" alt="'+esc(c)+'" width="'+w+'" height="'+h+'" loading="lazy"><figcaption>'+esc(c)+'</figcaption></figure>';
   document.getElementById('photo-grid').innerHTML = photos.map(fig).join('');
